@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 from  datetime import timedelta
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -22,6 +23,7 @@ with open('.env') as f:
 
 content = content.splitlines()
 
+#For Localhost
 DATABASE = content[0].split("=")[1]
 DATABASE_USER = content[1].split("=")[1]
 DATABASE_PASSWORD = content[2].split("=")[1]
@@ -35,10 +37,14 @@ PROJECT_NAME = content[5].split("=")[1]
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'su6#@*kuh32bz)8bzbbjlih8t+4!^=hc-1f3teelq2m^@uih&9'
 
+#URL for DB
+DATABASE_URL = 'postgres://diadgcgveryctj:db5bb04050f568b6beb54d657db241dac9725969100ead1840086d4c6eed8e65@ec2-23-23-192-242.compute-1.amazonaws.com:5432/dbu7p5fd0i8eid'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
 
 
 # Application definition
@@ -101,15 +107,19 @@ WSGI_APPLICATION = 'interintel.wsgi.application'
 #     }
 # }
 
+#DATABASES = {
+#   "default": {
+#        "ENGINE": 'django.db.backends.postgresql_psycopg2',
+#        "NAME": DATABASE,
+#        "USER": DATABASE_USER,
+#        "PASSWORD": DATABASE_PASSWORD,
+#        "HOST": HOST,
+#        "PORT": 5432,
+#    }
+#}
+
 DATABASES = {
-    "default": {
-        "ENGINE": 'django.db.backends.postgresql_psycopg2',
-        "NAME": DATABASE,
-        "USER": DATABASE_USER,
-        "PASSWORD": DATABASE_PASSWORD,
-        "HOST": HOST,
-        "PORT": 5432,
-    }
+    'default': dj_database_url.config()
 }
 
 # Password validation
