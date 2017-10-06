@@ -160,6 +160,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
 AUTH_USER_MODEL = 'users.User'
 
 JWT_AUTH = {
