@@ -60,6 +60,8 @@ INSTALLED_APPS = [
     # third pary apps
     'rest_framework',
     'corsheaders',
+    # local apps
+    'dict',
     'users'
 
 ]
@@ -160,8 +162,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
-
 AUTH_USER_MODEL = 'users.User'
 
 JWT_AUTH = {
@@ -169,7 +169,7 @@ JWT_AUTH = {
     'JWT_ALLOW_REFRESH': True,
     'JWT_REFRESH_EXPIRATION_DELTA': timedelta(minutes=60),  # Token can be refreshed up to * minutes after being issued
     'JWT_SECRET_KEY': SECRET_KEY,
-    'JWT_AUTH_HEADER_PREFIX': 'Token' 
+    'JWT_AUTH_HEADER_PREFIX': 'Token'
 }
 
 
@@ -178,10 +178,10 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',      
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
     ),
     'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',    
+        'rest_framework.renderers.JSONRenderer',
     ),
     'DEFAULT_PARSER_CLASSES': (
         'rest_framework.parsers.JSONParser',
@@ -226,4 +226,3 @@ CACHES = {
         }
     }
 }
-

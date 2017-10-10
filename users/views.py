@@ -1,5 +1,5 @@
 __all__ = ['login', 'create_user', 'view_users', 'approve_users', 'delete_user',
-            'check_activation_key', 'activate_account']
+            'check_activation_key', 'activate_account', 'search_users']
 
 import string
 
@@ -8,6 +8,7 @@ from django.contrib.auth.models import Permission
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.signals import user_logged_in
+from django.db.models import Q
 
 from rest_framework import status
 from rest_framework.response import Response
@@ -93,27 +94,52 @@ def create_user(request):
 
 
 @api_view(['GET'])
-def view_users(request, state):
+@permission_classes([AllowAny, ])
+def view_users(request):
     """
     Endpoint: /user/view_users/<status>/
     Method: GET
     Allowed users: Admins
     Response status code: 200 success
-    Description: Admins can view all users created. They view them by status.
+    Description: Admins can view all users created
+    """
+   # if not request.user.has_perm('users.can_view_users'):
+    #    return Response({'error': "can not view users"}, status=status.HTTP_403_FORBIDDEN)
+
+    users = User.objects.all()
+    if not users:
+        return Response([])
+
+    data = []
+    for user in users:
+        user_details = {}
+        user_details['name'] = "%s %s" % (user.first_name, user.last_name)
+        user_details['status'] = user.is_active
+        user_details['date_created'] = user.date_joined
+        user_details['last_login'] = user.last_login
+        user_details['email'] = user.email
+        user_details['id'] = user.id
+
+        data.append(user_details)
+
+    return Response(data)
+
+@api_view(['GET'])
+@permission_classes([AllowAny, ])
+def search_users(request, name):
+    """
+    Endpoint: /user/search_users/<name>/
+    Method: GET
+    Allowed users: Admins
+    Response status code: 200 success
+    Description: Admins can view all users created. They view them by name.
     - users not approved yet, users that have been approved, and users that have been rejected
     """
-    if not request.user.has_perm('users.can_view_users'):
-        return Response({'error': "can not view users"}, status=status.HTTP_403_FORBIDDEN)
 
-    statuses = {
-        "saved": 001,
-        "approved": 002,
-        "rejected": 003
-    }
 
-    account_status = statuses.get(state)
-    users = User.objects.filter(status=account_status
-    ).exclude(id=request.user.id)
+
+    account_name = name
+    users = User.objects.filter(Q(first_name__icontains=account_name)|Q(last_name__icontains=account_name)).exclude(id=request.user.id)
     if not users:
         return Response([])
 
