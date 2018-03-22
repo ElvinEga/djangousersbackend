@@ -21,4 +21,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^users/', include('users.urls')),
     url(r'^dict/', include('dict.urls')),
+    url(r'^evaluation/', include('evaluation.urls')),
 ]

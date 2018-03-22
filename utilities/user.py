@@ -35,7 +35,7 @@ def check_if_email_exists(email):
 	for user in users:
 		if user.email == email:
 			return True
-			
+
 	return False
 
 def assign_permissions(sysem_permissions, user_permissions, user):

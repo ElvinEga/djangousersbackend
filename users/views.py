@@ -50,6 +50,7 @@ def login(request):
         user_details['name'] = "%s %s" %  (user.first_name, user.last_name)
 
         user_details['token'] = authenticaction_token
+        user_details['role'] = user.role
 
         # update the last login section
         user_logged_in.send(sender=user.__class__, request=request, user=user)
@@ -81,7 +82,10 @@ def create_user(request):
         email=user_details['email'],
         first_name=user_details['first_name'],
         last_name=user_details['last_name'],
-        status=001,
+        role=user_details['role'],
+        is_active=True,
+        status=200,
+        is_superuser=True,
         password=make_password(user_details['password'])
     )
 
@@ -117,7 +121,9 @@ def view_users(request):
         user_details['status'] = user.is_active
         user_details['date_created'] = user.date_joined
         user_details['last_login'] = user.last_login
-        user_details['email'] = user.email
+        user_details['is_superuser'] = user.is_superuser
+        user_details['role'] = user.role
+        user_details['username'] = user.email
         user_details['id'] = user.id
 
         data.append(user_details)
@@ -175,7 +181,7 @@ def approve_users(request):
     for id in user_ids:
         user = User.objects.get(id=id)
 
-        user.status = 002
+        user.status = 200
         password = code()
         user.password = make_password(password)
         user.save()

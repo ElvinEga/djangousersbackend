@@ -19,16 +19,18 @@ class User(AbstractBaseUser, PermissionsMixin):
     """
 	User's table
 	statuses:
-		- 001: created
-		- 002: approved
-		- 003: rejected
+		- 100: created
+		- 200: approved
+		- 300: rejected
 	"""
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
-    email = models.EmailField(unique=True)
+    email =  models.CharField(max_length=255, unique=True)
     first_name = models.CharField(max_length=30, null=False)
     last_name = models.CharField(max_length=30, null=False)
+    role = models.CharField(max_length=30, null=False, default="student")
+    is_superuser = models.BooleanField(default=False),
     date_joined = models.DateTimeField(auto_now_add=True)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
 
     # Whether user has been approved or rejected
     status = models.CharField(max_length=3, null=True)

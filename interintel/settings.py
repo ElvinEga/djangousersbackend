@@ -62,7 +62,8 @@ INSTALLED_APPS = [
     'corsheaders',
     # local apps
     'dict',
-    'users'
+    'users',
+    'evaluation'
 
 ]
 
@@ -109,20 +110,20 @@ WSGI_APPLICATION = 'interintel.wsgi.application'
 #     }
 # }
 
-#DATABASES = {
-#   "default": {
-#        "ENGINE": 'django.db.backends.postgresql_psycopg2',
-#        "NAME": DATABASE,
-#        "USER": DATABASE_USER,
-#        "PASSWORD": DATABASE_PASSWORD,
-#        "HOST": HOST,
-#        "PORT": 5432,
-#    }
-#}
-
 DATABASES = {
-    'default': dj_database_url.config()
+  "default": {
+       "ENGINE": 'django.db.backends.postgresql_psycopg2',
+       "NAME": DATABASE,
+       "USER": DATABASE_USER,
+       "PASSWORD": DATABASE_PASSWORD,
+       "HOST": HOST,
+       "PORT": 5432,
+   }
 }
+
+#DATABASES = {
+#    'default': dj_database_url.config()
+#}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
@@ -193,6 +194,8 @@ REST_FRAMEWORK = {
 CORS_ORIGIN_WHITELIST = (
     'polymerinter.herokuapp.com',
     'localhost:4000',
+    'localhost:4200',
+    '127.0.0.1:4200',
     '127.0.0.1:4000'
 )
 
